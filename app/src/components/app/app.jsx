@@ -4,6 +4,8 @@ import Chat from "../chat";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+import "./app.css";
+
 const App = () => {
   return (
     <Router>

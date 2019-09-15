@@ -1,0 +1,13 @@
+.search-pannel {
+  padding: 20px;
+}
+
+.search-pannel input {
+  border-radius: 3px;
+  border: none;
+  padding: 14px;
+  color: white;
+  background: #6a6c75;
+  width: 90%;
+  font-size: 14px;
+}
