@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Chatroom from "../chatroom";
+import React from "react";
 import Auth from "../auth";
+import Chat from "../chat";
 
-import "./app.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const App = () => {
-  const [username, setUsername] = useState("");
-
   return (
     <Router>
       <div className="app">
-        <Route
-          exact
-          path="/"
-          render={() => <Auth setUsername={setUsername} username={username} />}
-        />
-        <Route path="/chatroom/" component={Chatroom} />
+        <Route exact path="/" component={Auth} />
+        <Route path="/chat/" component={Chat} />
       </div>
     </Router>
   );

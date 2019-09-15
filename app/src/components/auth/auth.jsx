@@ -1,32 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import User from "../../models/User";
 
+import * as actions from "../../store/user/actions";
 import uuid from "uuid";
 
-import "./auth.css";
+const Auth = ({ craeteUser }) => {
+  const id = uuid.v4();
+  const [name, setName] = useState("");
 
-const Auth = props => {
-  const { setUsername, username } = props;
+  const handleSubmit = e => {
+    e.preventDefault();
+    craeteUser({ name, id });
+  };
 
   return (
-    <form className="auth">
-      <label>Enter Your Username</label>
-      <input type="text" onChange={e => setUsername(e.target.value)} />
-      <AuthButton username={username} />
-    </form>
+    <div className="auth">
+      <form>
+        <label htmlFor="">Enter your name</label>
+        <input
+          className="auth__input"
+          type="text"
+          onChange={e => setName(e.target.value)}
+        />
+        <AuthButton handleSubmit={handleSubmit} />
+      </form>
+    </div>
   );
 };
 
-const AuthButton = withRouter(({ history, username }) => {
-  const id = uuid.v4();
-
+const AuthButton = withRouter(({ history, handleSubmit }) => {
   return (
     <button
-      onClick={() => {
-        const user = new User(id, username);
-
-        return history.push("/chatroom", { username });
+      className="auth__button"
+      type="submit"
+      onClick={e => {
+        handleSubmit(e);
+        history.push("/chat/");
       }}
     >
       Join
@@ -34,4 +44,13 @@ const AuthButton = withRouter(({ history, username }) => {
   );
 });
 
-export default Auth;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    actions
+  )(Auth)
+);

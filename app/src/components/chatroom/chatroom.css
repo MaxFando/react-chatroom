@@ -1,8 +1,0 @@
-.chatroom {
-  background-color: #fff;
-  max-height: 600px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 2fr 1fr;
-  height: 90vh;
-}
