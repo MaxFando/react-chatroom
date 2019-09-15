@@ -6,7 +6,6 @@ const SearchPannel = () => {
   return (
     <div className="search-pannel">
       <input type="text" placeholder="search" />
-      <i class="fa fa-search"></i>
     </div>
   );
 };
