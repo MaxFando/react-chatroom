@@ -1,6 +1,6 @@
 .chat {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  background: #ffffff;
+  background: #f2f5f8;
   border-radius: 5px;
 }

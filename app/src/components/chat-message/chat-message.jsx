@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./chat-message.css";
+
 const ChatMessage = () => {
   return (
     <div class="chat-message clearfix">

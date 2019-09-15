@@ -1,4 +1,6 @@
 .chat-list {
   background: #444753;
   color: #ffffff;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }

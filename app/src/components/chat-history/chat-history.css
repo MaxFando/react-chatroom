@@ -1,0 +1,31 @@
+.chat-history {
+  padding: 30px 30px 20px;
+  border-bottom: 2px solid white;
+  overflow-y: scroll;
+  background-color: #ffffff;
+  height: 300px;
+}
+
+.chat-history .message-data {
+  margin-bottom: 15px;
+}
+
+.chat-history .message-data-time {
+  color: #a8aab1;
+  padding-left: 6px;
+}
+
+.chat-history .message {
+  background: #94c2ed;
+  color: white;
+  padding: 18px 20px;
+  line-height: 26px;
+  font-size: 16px;
+  border-radius: 7px;
+  margin-bottom: 30px;
+  width: 90%;
+}
+
+.align-right {
+  text-align: right;
+}
