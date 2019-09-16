@@ -1,1 +1,1 @@
-export const craeteUser = payload => ({ type: "create_user", payload });
+export const createUser = payload => ({ type: "create_user", payload });

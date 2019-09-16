@@ -7,17 +7,39 @@ import "./chat-message.css";
 
 import * as actions from "../../store/messages/actions";
 
-const ChatMessage = ({ addMessage }) => {
+const formatAMPM = date => {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+
+  const strTime = hours + ":" + minutes + " " + ampm;
+
+  return strTime;
+};
+
+const ChatMessage = ({ addMessage, user }) => {
   const endpoint = "http://localhost:3001";
   const handleSubmit = e => {
     e.preventDefault();
 
     const id = uuid.v4();
     const socket = socketClient(endpoint);
-    const message = document.querySelector("textarea").value;
-    socket.emit("chat_message", { id, message });
+    const textarea = document.querySelector("textarea");
+    const message = textarea.value;
+    const username = user.name;
 
-    addMessage({ id, message });
+    socket.emit("chat_message", {
+      id,
+      message,
+      username,
+      time: formatAMPM(new Date())
+    });
+    textarea.value = "";
+
+    addMessage({ id, message, username, time: formatAMPM(new Date()) });
   };
 
   return (

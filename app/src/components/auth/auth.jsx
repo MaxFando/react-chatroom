@@ -5,13 +5,13 @@ import { withRouter } from "react-router-dom";
 import * as actions from "../../store/user/actions";
 import uuid from "uuid";
 
-const Auth = ({ craeteUser }) => {
+const Auth = ({ createUser }) => {
   const id = uuid.v4();
   const [name, setName] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
-    craeteUser({ name, id });
+    createUser({ name, id });
   };
 
   return (
