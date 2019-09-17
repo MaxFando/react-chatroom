@@ -5,11 +5,15 @@ import * as actions from "../../store/messages/actions";
 
 import "./chat-history.css";
 
-const ChatHistory = () => {
+const ChatHistory = ({ fetchData, isLoading, messages }) => {
   const [chatroomMessages, setChatroomMessages] = useState([]);
 
-  const endpoint = "http://localhost:3001";
-  const socket = socketClient(endpoint);
+  const url = "http://localhost:3001";
+  const socket = socketClient(url);
+
+  useEffect(() => {
+    fetchData(`${url}/messages`);
+  }, []);
 
   useEffect(() => {
     socket.on("chat_message", data => {
@@ -21,11 +25,19 @@ const ChatHistory = () => {
     };
   }, [chatroomMessages]);
 
+  if (isLoading) {
+    return (
+      <div className="chat-history">
+        <p>Loading..</p>
+      </div>
+    );
+  }
+
   let content;
-  if (!chatroomMessages.length) {
+  if (!messages.length) {
     content = <li>Empty</li>;
   } else {
-    content = chatroomMessages.map(msg => {
+    content = messages.map(msg => {
       const { id, message, username, time } = msg;
 
       return (
@@ -48,10 +60,19 @@ const ChatHistory = () => {
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    messages: state.items,
+    isLoading: state.itemsIsLoading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchData: url => dispatch(actions.messagesFetchData(url))
+  };
 };
 
 export default connect(
   mapStateToProps,
-  actions
+  mapDispatchToProps
 )(ChatHistory);

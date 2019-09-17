@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -21,7 +21,10 @@ const ChatHeader = ({ chatrooms, location, messages }) => {
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    messages: state.items,
+    chatrooms: state.chatrooms
+  };
 };
 
 export default withRouter(connect(mapStateToProps)(ChatHeader));

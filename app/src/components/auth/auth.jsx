@@ -30,9 +30,7 @@ const Auth = ({ createUser }) => {
 };
 
 const AuthButton = withRouter(({ history, handleSubmit, location }) => {
-  const endpoint = location.hasOwnProperty("state")
-    ? location.state.from.pathname
-    : "/chat";
+  const endpoint = location.state ? location.state.from.pathname : "/chat";
 
   return (
     <button

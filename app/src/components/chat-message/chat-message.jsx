@@ -68,12 +68,20 @@ const ChatMessage = ({ addMessage, user, location }) => {
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addMessage: data => dispatch(actions.addMessage(data))
+  };
 };
 
 export default withRouter(
   connect(
     mapStateToProps,
-    actions
+    mapDispatchToProps
   )(ChatMessage)
 );
