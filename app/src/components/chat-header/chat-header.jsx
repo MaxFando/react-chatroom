@@ -1,16 +1,27 @@
 import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import "./chat-header.css";
 
-const ChatHeader = () => {
+const ChatHeader = ({ chatrooms, location, messages }) => {
+  const id = location.pathname.split("/")[2];
+  const name = chatrooms.filter(chatroom => chatroom.id === id).name;
+
   return (
     <div className="chat-header">
       <div className="chat-about">
-        <div className="chat-with">Chat with Vincent Porter</div>
-        <div className="chat-num-messages">already 1 902 messages</div>
+        <div className="chat-with">Chat {name}</div>
+        <div className="chat-num-messages">
+          already {messages.length} messages
+        </div>
       </div>
     </div>
   );
 };
 
-export default ChatHeader;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default withRouter(connect(mapStateToProps)(ChatHeader));

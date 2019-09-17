@@ -10,15 +10,22 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(`${__dirname}/app/build/index.html`));
 });
 
+const connections = [];
+
 io.on("connection", function(socket) {
-  console.log("user connected");
+  connections.push(socket);
+
+  // socket.on("creat_chatroom", roomId => {
+  //   socket.join(roomId);
+  // });
+
   socket.on("chat_message", obj => {
-    console.log("data", obj);
     io.emit("chat_message", obj);
+    socket.broadcast.to(obj.chatroomId).emit(obj);
   });
 
   socket.on("disconnect", () => {
-    console.log("user is diconnected");
+    connections.splice(connections.indexOf(socket), 1);
   });
 });
 

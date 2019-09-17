@@ -11,7 +11,7 @@ const App = () => {
     <Router>
       <div className="app">
         <Route exact path="/" component={Auth} />
-        <Route path="/chat/" component={Chat} />
+        <Route path="/chat" component={Chat} />
       </div>
     </Router>
   );

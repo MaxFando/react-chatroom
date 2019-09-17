@@ -29,14 +29,18 @@ const Auth = ({ createUser }) => {
   );
 };
 
-const AuthButton = withRouter(({ history, handleSubmit }) => {
+const AuthButton = withRouter(({ history, handleSubmit, location }) => {
+  const endpoint = location.hasOwnProperty("state")
+    ? location.state.from.pathname
+    : "/chat";
+
   return (
     <button
       className="auth__button"
       type="submit"
       onClick={e => {
         handleSubmit(e);
-        history.push("/chat/");
+        history.push(endpoint);
       }}
     >
       Join

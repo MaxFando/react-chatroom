@@ -10,7 +10,6 @@ import "./index.css";
 
 import * as reducers from "./store/reducers";
 const store = createStore(combineReducers(reducers));
-console.log("store", store.getState());
 
 ReactDOM.render(
   <Provider store={store}>
