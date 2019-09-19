@@ -24,6 +24,5 @@ export const messagesFetchData = url => async dispatch => {
   dispatch(messagesIsLoading(false));
 
   const items = await response.json();
-  console.log("items", items);
   dispatch(messagesFetchDataSuccess(items));
 };

@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SearchPannel from "../search-pannel";
 import AddChat from "../add-chat";
 
 import * as actions from "../../store/chatrooms/actions";
 import { connect } from "react-redux";
-import { mapStateToProps } from "../../store/helpers";
 
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -13,13 +12,18 @@ import uuid from "uuid";
 
 import "./chat-list.css";
 
-const ChatList = ({ addChatroom, chatrooms }) => {
+const ChatList = ({ chatrooms, addChatroom, isLoading, getChatrooms }) => {
   const addChat = () => {
     const id = uuid.v4();
     const data = { id, name: `Chatroom ${chatrooms.length + 1}` };
-
     addChatroom(data);
   };
+
+  const url = "http://localhost:3001";
+
+  // useEffect(() => {
+  //   getChatrooms(`${url}/chats`);
+  // }, []);
 
   return (
     <div className="chat-list">
@@ -49,9 +53,23 @@ const List = ({ chats }) => {
   return <ul className="list">{content}</ul>;
 };
 
+const mapStateToProps = state => {
+  return {
+    chatrooms: state.chatroomsReducer.chatrooms,
+    isLoading: state.chatroomsReducer.isLoading
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getChatrooms: url => dispatch(actions.getChatrooms(url)),
+    addChatroom: data => dispatch(actions.addChatroom(data))
+  };
+};
+
 export default withRouter(
   connect(
     mapStateToProps,
-    actions
+    mapDispatchToProps
   )(ChatList)
 );

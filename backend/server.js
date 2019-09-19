@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const connections = [];
 const messages = {};
+const chats = [];
 
 app.use(express.static(path.join(__dirname, "app/build")));
 app.use(cors());
@@ -15,21 +16,31 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(`${__dirname}/app/build/index.html`));
 });
 
-app.get("/messages", (req, res) => {
-  return res.send(Object.values(messages));
+app.get("/messages/:chatroomId", (req, res) => {
+  const { chatroomId } = req.params;
+
+  messages.hasOwnProperty(chatroomId)
+    ? res.send(Object.values(messages[chatroomId]))
+    : res.send([]);
+});
+
+app.get("/chats", (req, res) => {
+  res.send(chats);
 });
 
 io.on("connection", function(socket) {
   connections.push(socket);
 
   socket.on("creat_chatroom", roomId => {
+    chats.push(roomId);
     socket.join(roomId);
   });
 
   socket.on("chat_message", obj => {
-    messages[obj.chatroomId].push(ogj.message);
-    io.emit("chat_message", obj);
-    socket.broadcast.to(obj.chatroomId).emit(obj);
+    const { chatroomId, message } = obj;
+    messages[chatroomId] = [...(messages[chatroomId] || []), obj];
+
+    socket.broadcast.to(chatroomId).emit("chat_message", obj);
   });
 
   socket.on("disconnect", () => {

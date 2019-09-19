@@ -1,43 +1,17 @@
-const initialState = [];
+const initialState = { messages: [], isLoading: false };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case "add_message":
-      return [...state, action.payload];
-    case "MESSAGES_IS_LOADING":
-      return action.isLoading;
-    case "MESSAGES_FETCH_DATA_SUCCESS":
-      return action.items;
-    default:
-      return state;
+const actionByTypes = {
+  ADD_MESSAGE: (state, payload) => ({
+    ...state,
+    messages: [...state.messages, payload]
+  }),
+  MESSAGES_IS_LOADING: (state, isLoading) => ({ ...state, isLoading })
+};
+
+export default function messagesReducer(state = initialState, action) {
+  if (actionByTypes[action.type]) {
+    return actionByTypes[action.type](state, action.payload);
   }
-}
 
-export function addItems(state = [], action) {
-  switch (action.type) {
-    case "ADD_MESSAGE":
-      return [...state, action.payload];
-    default:
-      return state;
-  }
-}
-
-export function itemsIsLoading(state = false, action) {
-  switch (action.type) {
-    case "MESSAGES_IS_LOADING":
-      return action.isLoading;
-
-    default:
-      return state;
-  }
-}
-
-export function items(state = [], action) {
-  switch (action.type) {
-    case "MESSAGES_FETCH_DATA_SUCCESS":
-      return action.items;
-
-    default:
-      return state;
-  }
+  return state;
 }

@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import socketClient from "socket.io-client";
 import * as actions from "../../store/messages/actions";
 
+import { getChatroomIdFromUrl } from "../../store/helpers";
+
 import "./chat-history.css";
 
-const ChatHistory = ({ fetchData, isLoading, messages }) => {
-  const [chatroomMessages, setChatroomMessages] = useState([]);
-
+const ChatHistory = ({
+  fetchData,
+  isLoading,
+  messages,
+  location,
+  addMessage
+}) => {
   const url = "http://localhost:3001";
   const socket = socketClient(url);
+  const chatroomId = getChatroomIdFromUrl(location);
 
   useEffect(() => {
-    fetchData(`${url}/messages`);
+    // fetchData(`${url}/messages/${chatroomId}`);
+    socket.emit("creat_chatroom", chatroomId);
   }, []);
 
   useEffect(() => {
     socket.on("chat_message", data => {
-      setChatroomMessages(prevState => [...prevState, data]);
+      addMessage(data);
     });
 
     return () => {
       socket.off();
     };
-  }, [chatroomMessages]);
+  }, [messages]);
 
   if (isLoading) {
     return (
@@ -38,7 +47,7 @@ const ChatHistory = ({ fetchData, isLoading, messages }) => {
     content = <li>Empty</li>;
   } else {
     content = messages.map(msg => {
-      const { id, message, username, time } = msg;
+      const { messageId: id, message, username, time } = msg;
 
       return (
         <li key={id}>
@@ -61,18 +70,21 @@ const ChatHistory = ({ fetchData, isLoading, messages }) => {
 
 const mapStateToProps = state => {
   return {
-    messages: state.items,
-    isLoading: state.itemsIsLoading
+    messages: state.messagesReducer.messages,
+    isLoading: state.messagesReducer.isLoading
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchData: url => dispatch(actions.messagesFetchData(url))
+    fetchData: url => dispatch(actions.messagesFetchData(url)),
+    addMessage: payload => dispatch(actions.addMessage(payload))
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ChatHistory);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ChatHistory)
+);

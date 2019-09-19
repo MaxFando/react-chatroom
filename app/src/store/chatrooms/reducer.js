@@ -1,12 +1,17 @@
-import uuid from "uuid";
+const initialState = { chatrooms: [], isLoading: false };
 
-const initialState = [{ id: uuid.v4(), name: "Chatroom 1" }];
+const actionByTypes = {
+  ADD_CHATROOM: (state, payload) => ({
+    ...state,
+    chatrooms: [...state.chatrooms, payload]
+  }),
+  CHATROOMS_IS_LOADING: (state, isLoading) => ({ ...state, isLoading })
+};
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case "add_chatroom":
-      return [...state, action.payload];
-    default:
-      return state;
+export default function chatroomsReducer(state = initialState, action) {
+  if (actionByTypes[action.type]) {
+    return actionByTypes[action.type](state, action.payload);
   }
+
+  return state;
 }

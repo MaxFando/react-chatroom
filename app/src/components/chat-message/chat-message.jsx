@@ -24,20 +24,20 @@ const formatAMPM = date => {
   return strTime;
 };
 
-const ChatMessage = ({ addMessage, user, location }) => {
-  const endpoint = "http://localhost:3001";
-  const socket = socketClient(endpoint);
+const ChatMessage = ({ user, location }) => {
+  const url = "http://localhost:3001";
+  const socket = socketClient(url);
   const chatroomId = getChatroomIdFromUrl(location);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    const id = uuid.v4();
+    const messageId = uuid.v4();
     const textarea = document.querySelector("textarea");
     const message = textarea.value;
     const username = user.name;
     const data = {
-      id,
+      messageId,
       message,
       username,
       time: formatAMPM(new Date()),
@@ -46,8 +46,6 @@ const ChatMessage = ({ addMessage, user, location }) => {
 
     socket.emit("chat_message", data);
     textarea.value = "";
-
-    addMessage(data);
   };
 
   useEffect(() => {
@@ -79,9 +77,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ChatMessage)
-);
+export default withRouter(connect(mapStateToProps)(ChatMessage));

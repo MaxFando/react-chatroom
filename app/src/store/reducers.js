@@ -1,5 +1,5 @@
 import user from "./user/reducer";
-import { addItems, itemsIsLoading, items } from "./messages/reducer";
-import chatrooms from "./chatrooms/reducer";
+import messagesReducer from "./messages/reducer";
+import chatroomsReducer from "./chatrooms/reducer";
 
-export { user, addItems, itemsIsLoading, items, chatrooms };
+export { user, messagesReducer, chatroomsReducer };
